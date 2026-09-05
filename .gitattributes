@@ -1,0 +1,9 @@
+# 统一行尾符，避免 Windows/Linux/macOS 协作时的 diff 噪声
+* text=auto
+
+*.go text eol=lf
+*.md text eol=lf
+*.sh text eol=lf
+*.yaml text eol=lf
+*.yml text eol=lf
+*.json text eol=lf

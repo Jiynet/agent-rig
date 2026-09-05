@@ -1,0 +1,15 @@
+# golangci-lint v2 配置
+version: "2"
+
+linters:
+  # standard 集合包含 errcheck、govet、ineffassign、staticcheck、unused 等默认项
+  default: standard
+  enable:
+    - revive   # 更严格的 go doc / 命名规范检查
+  exclusions:
+    generated: lax
+
+formatters:
+  enable:
+    - gofmt
+    - goimports
