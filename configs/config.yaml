@@ -1,0 +1,39 @@
+# ai-cli-agent 配置文件。
+# 复制为 configs/config.local.yaml 并按需修改（该文件已被 .gitignore 忽略）。
+llm:
+  provider: openai # openai | anthropic | ollama ...
+  model: gpt-4o
+  base_url: https://api.openai.com/v1
+  # 从环境变量读取密钥，切勿硬编码
+  api_key_env: OPENAI_API_KEY
+  temperature: 0.2
+  max_tokens: 2048
+
+agent:
+  # ReAct 循环最大迭代次数，防止死循环
+  max_iterations: 10
+
+tools:
+  # 启用的内置工具
+  enabled:
+    - shell
+    - file_read
+    - file_write
+    - web_search
+    - http_request
+
+memory:
+  enabled: true
+
+context:
+  # 提示词 token 预算（估算值）；-1 关闭上下文组装，全量历史透传。
+  max_prompt_tokens: 6000
+  # 至少保留原文的最近消息条数。
+  recent_messages: 8
+  # 单条工具观察的最大 token，超出按头尾截断。
+  max_tool_output_tokens: 400
+  # 旧轮次摘要的最大 token。
+  summary_max_tokens: 300
+
+logging:
+  level: info # debug | info | warn | error
