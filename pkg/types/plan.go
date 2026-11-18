@@ -3,6 +3,7 @@ package types
 // StepStatus 表示计划中单个步骤的状态。
 type StepStatus string
 
+// StepPending, StepInProgress, StepDone, StepFailed and StepSkipped are the step statuses.
 const (
 	StepPending    StepStatus = "pending"
 	StepInProgress StepStatus = "in_progress"

@@ -62,6 +62,7 @@ func (t *ConsoleTracer) nextID() string {
 	return fmt.Sprintf("span_%d", t.seq)
 }
 
+// Start 开始一个新的顶层跨度。
 func (t *ConsoleTracer) Start(name string, attrs map[string]any) SpanHandle {
 	t.mu.Lock()
 	defer t.mu.Unlock()
@@ -207,37 +208,40 @@ func (t *ConsoleTracer) printSpan(span *types.Span, depth int) {
 		indent += "  "
 	}
 	statusIcon := "✓"
-	if span.Status == types.SpanError {
+	switch span.Status {
+	case types.SpanError:
 		statusIcon = "✗"
-	} else if span.Status == types.SpanSkip {
+	case types.SpanSkip:
 		statusIcon = "⊘"
 	}
 
-	fmt.Fprintf(t.out, "%s%s %s [%dms]", indent, statusIcon, span.Name, span.Duration.Milliseconds())
+	_, _ = fmt.Fprintf(t.out, "%s%s %s [%dms]", indent, statusIcon, span.Name, span.Duration.Milliseconds())
 	if span.Error != "" {
-		fmt.Fprintf(t.out, " err=%s", span.Error)
+		_, _ = fmt.Fprintf(t.out, " err=%s", span.Error)
 	}
 	// 输出关键属性
 	for k, v := range span.Attributes {
 		if k == "prompt_tokens" || k == "completion_tokens" || k == "total_tokens" ||
 			k == "model" || k == "tool_name" || k == "iterations" || k == "max_iterations" ||
 			k == "context_tokens" {
-			fmt.Fprintf(t.out, " %s=%v", k, v)
+			_, _ = fmt.Fprintf(t.out, " %s=%v", k, v)
 		}
 	}
-	fmt.Fprintln(t.out)
+	_, _ = fmt.Fprintln(t.out)
 
 	for _, child := range span.Children {
 		t.printSpan(child, depth+1)
 	}
 }
 
+// Metrics 返回当前累计指标的快照。
 func (t *ConsoleTracer) Metrics() types.AgentMetrics {
 	t.mu.Lock()
 	defer t.mu.Unlock()
 	return t.metrics
 }
 
+// Reset 清空跨度树与累计指标，用于新一轮执行。
 func (t *ConsoleTracer) Reset() {
 	t.mu.Lock()
 	defer t.mu.Unlock()

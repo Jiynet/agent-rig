@@ -65,13 +65,13 @@ func search(ctx context.Context, client *http.Client, query string) (string, err
 	if err != nil {
 		return "", fmt.Errorf("create request: %w", err)
 	}
-	req.Header.Set("User-Agent", "ai-cli-agent/0.1")
+	req.Header.Set("User-Agent", "agent-rig/0.1")
 
 	resp, err := client.Do(req)
 	if err != nil {
 		return "", fmt.Errorf("http get: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		body, _ := io.ReadAll(resp.Body)
@@ -102,21 +102,21 @@ type duckDuckGoResult struct {
 // formatSearchResult 格式化搜索结果。
 func formatSearchResult(query string, r *duckDuckGoResult) string {
 	var sb strings.Builder
-	sb.WriteString(fmt.Sprintf("搜索: %s\n", query))
+	_, _ = fmt.Fprintf(&sb, "搜索: %s\n", query)
 
 	if r.Heading != "" {
-		sb.WriteString(fmt.Sprintf("\n## %s\n", r.Heading))
+		_, _ = fmt.Fprintf(&sb, "\n## %s\n", r.Heading)
 	}
 
 	if r.Abstract != "" {
-		sb.WriteString(fmt.Sprintf("\n%s\n", r.Abstract))
+		_, _ = fmt.Fprintf(&sb, "\n%s\n", r.Abstract)
 		if r.AbstractURL != "" {
-			sb.WriteString(fmt.Sprintf("来源: %s\n", r.AbstractURL))
+			_, _ = fmt.Fprintf(&sb, "来源: %s\n", r.AbstractURL)
 		}
 	}
 
 	if r.Answer != "" {
-		sb.WriteString(fmt.Sprintf("\n答案: %s\n", r.Answer))
+		_, _ = fmt.Fprintf(&sb, "\n答案: %s\n", r.Answer)
 	}
 
 	if len(r.RelatedTopics) > 0 {
@@ -128,9 +128,9 @@ func formatSearchResult(query string, r *duckDuckGoResult) string {
 		for i := 0; i < count; i++ {
 			t := r.RelatedTopics[i]
 			if t.Text != "" {
-				sb.WriteString(fmt.Sprintf("- %s", t.Text))
+				_, _ = fmt.Fprintf(&sb, "- %s", t.Text)
 				if t.FirstURL != "" {
-					sb.WriteString(fmt.Sprintf(" (%s)", t.FirstURL))
+					_, _ = fmt.Fprintf(&sb, " (%s)", t.FirstURL)
 				}
 				sb.WriteString("\n")
 			}

@@ -8,6 +8,12 @@ linters:
     - revive   # 更严格的 go doc / 命名规范检查
   exclusions:
     generated: lax
+    rules:
+      # 测试代码允许忽略错误返回与文档注释，生产代码仍然严格检查。
+      - path: _test\.go
+        linters:
+          - errcheck
+          - revive
 
 formatters:
   enable:

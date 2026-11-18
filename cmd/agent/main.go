@@ -1,4 +1,4 @@
-// Package main 是 ai-cli-agent 的可执行入口：
+// Package main 是 AgentRig 的可执行入口：
 // 加载配置、组装各模块，并启动交互循环。
 package main
 
@@ -102,7 +102,7 @@ func main() {
 
 	// ---- 交互循环 ----
 	ctx := context.Background()
-	fmt.Println("ai-cli-agent 交互模式（输入 exit 退出）")
+	fmt.Println("AgentRig 交互模式（输入 exit 退出）")
 	reader := bufio.NewReader(os.Stdin)
 	for {
 		fmt.Print("> ")

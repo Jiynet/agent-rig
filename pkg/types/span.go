@@ -19,6 +19,7 @@ type Span struct {
 // SpanStatus 表示跨度的执行状态。
 type SpanStatus string
 
+// SpanOK, SpanError and SpanSkip are the span statuses.
 const (
 	SpanOK    SpanStatus = "ok"
 	SpanError SpanStatus = "error"

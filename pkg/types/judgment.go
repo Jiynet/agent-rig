@@ -3,6 +3,7 @@ package types
 // DecisionType 表示用户对动作的判断结果。
 type DecisionType string
 
+// DecisionApprove, DecisionReject, DecisionModify and DecisionUnknown are the decision types.
 const (
 	DecisionApprove DecisionType = "approve" // 批准执行
 	DecisionReject  DecisionType = "reject"  // 拒绝执行

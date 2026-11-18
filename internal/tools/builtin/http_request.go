@@ -64,14 +64,14 @@ func NewHTTPRequestTool() *tools.ToolSpec {
 				}
 			}
 			if req.Header.Get("User-Agent") == "" {
-				req.Header.Set("User-Agent", "ai-cli-agent/0.1")
+				req.Header.Set("User-Agent", "agent-rig/0.1")
 			}
 
 			resp, err := client.Do(req)
 			if err != nil {
 				return &types.ToolResult{OK: false, Output: fmt.Sprintf("请求失败: %v", err)}, nil
 			}
-			defer resp.Body.Close()
+			defer func() { _ = resp.Body.Close() }()
 
 			// 限制读取大小（防止内存溢出）
 			limitedReader := io.LimitReader(resp.Body, 64*1024) // 64KB
@@ -81,10 +81,10 @@ func NewHTTPRequestTool() *tools.ToolSpec {
 			}
 
 			var sb strings.Builder
-			sb.WriteString(fmt.Sprintf("HTTP %s %s\n", method, urlStr))
-			sb.WriteString(fmt.Sprintf("Status: %d %s\n", resp.StatusCode, resp.Status))
-			sb.WriteString(fmt.Sprintf("Content-Type: %s\n", resp.Header.Get("Content-Type")))
-			sb.WriteString(fmt.Sprintf("\n%s", string(respBody)))
+			_, _ = fmt.Fprintf(&sb, "HTTP %s %s\n", method, urlStr)
+			_, _ = fmt.Fprintf(&sb, "Status: %d %s\n", resp.StatusCode, resp.Status)
+			_, _ = fmt.Fprintf(&sb, "Content-Type: %s\n", resp.Header.Get("Content-Type"))
+			_, _ = fmt.Fprintf(&sb, "\n%s", string(respBody))
 
 			return &types.ToolResult{
 				OK:     resp.StatusCode >= 200 && resp.StatusCode < 400,

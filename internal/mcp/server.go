@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	serverName      = "ai-cli-agent"
+	serverName      = "agent-rig"
 	serverVersion   = "0.1.0"
 	protocolVersion = "2024-11-05"
 )
@@ -42,7 +42,7 @@ func (s *Server) Run(ctx context.Context) error {
 	if s.closer != nil {
 		go func() {
 			<-ctx.Done()
-			s.closer.Close()
+			_ = s.closer.Close()
 		}()
 	}
 
@@ -57,7 +57,7 @@ func (s *Server) Run(ctx context.Context) error {
 				return ctx.Err()
 			}
 			// 解析错误，返回 parse error
-			s.transport.Write(&Response{
+			_ = s.transport.Write(&Response{
 				JSONRPC: Version,
 				Error:   &Error{Code: ParseError, Message: err.Error()},
 			})
@@ -135,9 +135,9 @@ func (s *Server) handleToolsList(req *Request) *Response {
 		}
 	}
 
-	tools := make([]MCPTool, 0, len(defs))
+	tools := make([]Tool, 0, len(defs))
 	for _, def := range defs {
-		tools = append(tools, MCPTool{
+		tools = append(tools, Tool{
 			Name:        def.Name,
 			Description: def.Description,
 			InputSchema: def.Parameters,

@@ -193,7 +193,6 @@ func (a *Assembler) Build(history []*types.Message) ([]*types.Message, Stats) {
 				Content: a.buildSummary(units, include, allowance),
 			}
 			stats.SummaryUsed = true
-			remaining -= EstimateMessageTokens(summary)
 		} else {
 			// 预算已经用尽，至少留一句提示，避免模型以为历史不存在。
 			summary = &types.Message{

@@ -93,7 +93,7 @@ func (l *OpenAILLM) Generate(ctx context.Context, req *types.GenerateRequest) (*
 	if err != nil {
 		return nil, fmt.Errorf("llm request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		raw, _ := io.ReadAll(resp.Body)
@@ -145,7 +145,7 @@ func (l *OpenAILLM) GenerateStream(ctx context.Context, req *types.GenerateReque
 	if err != nil {
 		return fmt.Errorf("llm stream request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	if resp.StatusCode != http.StatusOK {
 		raw, _ := io.ReadAll(resp.Body)

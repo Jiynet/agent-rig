@@ -1,4 +1,4 @@
-# ai-cli-agent
+# AgentRig
 
 基于 **感知 → 规划 → 执行** 四层架构的 AI 命令行 Agent 框架，Go 语言实现。除配置解析使用 `yaml.v3` 外，全部基于标准库。
 
@@ -71,7 +71,7 @@ echo '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | ./bin/mcp-server
 # Claude Desktop 配置
 {
   "mcpServers": {
-    "ai-cli-agent": {
+    "agent-rig": {
       "command": "/path/to/bin/mcp-server"
     }
   }

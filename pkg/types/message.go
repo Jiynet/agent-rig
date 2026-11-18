@@ -3,6 +3,7 @@ package types
 // Role 表示对话消息的角色。
 type Role string
 
+// RoleSystem, RoleUser, RoleAssistant and RoleTool are the message roles.
 const (
 	RoleSystem    Role = "system"
 	RoleUser      Role = "user"

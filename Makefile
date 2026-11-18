@@ -1,4 +1,4 @@
-# ai-cli-agent 常用开发命令
+# AgentRig 常用开发命令
 GO       ?= go
 BINARY   := bin/agent
 PKG      := ./...

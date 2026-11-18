@@ -95,11 +95,11 @@ type ServerInfo struct {
 
 // ToolsListResult 是 tools/list 响应的结果。
 type ToolsListResult struct {
-	Tools []MCPTool `json:"tools"`
+	Tools []Tool `json:"tools"`
 }
 
-// MCPTool 描述一个 MCP 工具。
-type MCPTool struct {
+// Tool 描述一个 MCP 工具。
+type Tool struct {
 	Name        string         `json:"name"`
 	Description string         `json:"description,omitempty"`
 	InputSchema map[string]any `json:"inputSchema"`

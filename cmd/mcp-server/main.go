@@ -1,4 +1,4 @@
-// mcp-server 是 ai-cli-agent 的 MCP 协议服务端入口。
+// mcp-server 是 AgentRig 的 MCP 协议服务端入口。
 // 通过 stdio（stdin/stdout）以 JSON-RPC 2.0 协议暴露已注册的工具，
 // 允许外部客户端（如 Claude Desktop）调用 Agent 的工具。
 //
@@ -10,7 +10,7 @@
 //
 //	{
 //	  "mcpServers": {
-//	    "ai-cli-agent": {
+//	    "agent-rig": {
 //	      "command": "/path/to/bin/mcp-server"
 //	    }
 //	  }

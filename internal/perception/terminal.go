@@ -34,7 +34,7 @@ func (p *TerminalPerception) ParseInput(_ context.Context, rawInput string) (*ty
 
 // PromptForJudgment 向用户展示调用说明并收集判断结果。
 func (p *TerminalPerception) PromptForJudgment(_ context.Context, callDesc string, action *types.Action) (*types.JudgmentResult, error) {
-	fmt.Fprintf(p.out, "\n[执行确认] %s\n  - 说明: %s\n  批准? [回车=批准, n=拒绝, m=修改] ", action.Type, callDesc)
+	_, _ = fmt.Fprintf(p.out, "\n[执行确认] %s\n  - 说明: %s\n  批准? [回车=批准, n=拒绝, m=修改] ", action.Type, callDesc)
 
 	line, err := p.in.ReadString('\n')
 	if err != nil && line == "" {
@@ -68,6 +68,6 @@ func (p *TerminalPerception) FormatOutput(_ context.Context, result *types.Agent
 
 // RenderChunk 渲染流式输出分片，直接写向终端。
 func (p *TerminalPerception) RenderChunk(_ context.Context, chunk types.StreamChunk) error {
-	fmt.Fprint(p.out, chunk.Delta)
+	_, _ = fmt.Fprint(p.out, chunk.Delta)
 	return nil
 }

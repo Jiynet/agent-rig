@@ -71,7 +71,7 @@ func NewFileWriteTool() *tools.ToolSpec {
 			if err != nil {
 				return &types.ToolResult{OK: false, Output: fmt.Sprintf("打开文件失败: %v", err)}, nil
 			}
-			defer f.Close()
+			defer func() { _ = f.Close() }()
 
 			n, err := f.WriteString(content)
 			if err != nil {

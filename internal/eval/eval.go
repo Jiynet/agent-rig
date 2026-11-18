@@ -28,8 +28,10 @@ import (
 type Mode string
 
 const (
-	ModeFull      Mode = "full"      // 全量历史透传
-	ModeAssembled Mode = "assembled" // 预算化上下文组装
+	// ModeFull replays the complete history on every LLM call.
+	ModeFull Mode = "full"
+	// ModeAssembled uses the budgeted context assembler.
+	ModeAssembled Mode = "assembled"
 )
 
 // Task 是一条确定性评测任务。
@@ -558,7 +560,7 @@ func Summarize(results []Result) []Summary {
 // PrintTable 输出可读的评测表。
 func PrintTable(w io.Writer, results []Result) {
 	tw := tabwriter.NewWriter(w, 0, 2, 2, ' ', 0)
-	fmt.Fprintln(tw, "TASK\tMODE\tOK\tSTEPS\tLLM\tTOOL\tPROMPT\tCTX/ORIG\tSUMM\tTRUNC\tTIME")
+	_, _ = fmt.Fprintln(tw, "TASK\tMODE\tOK\tSTEPS\tLLM\tTOOL\tPROMPT\tCTX/ORIG\tSUMM\tTRUNC\tTIME")
 	for _, r := range results {
 		ok := "✓"
 		if !r.Success {
@@ -568,20 +570,20 @@ func PrintTable(w io.Writer, results []Result) {
 		if r.OverBudget {
 			note = "!"
 		}
-		fmt.Fprintf(tw, "%s\t%s\t%s%s\t%d\t%d\t%d\t%d\t%d/%d\t%d\t%d\t%s\n",
+		_, _ = fmt.Fprintf(tw, "%s\t%s\t%s%s\t%d\t%d\t%d\t%d\t%d/%d\t%d\t%d\t%s\n",
 			r.Task, r.Mode, ok, note, r.Steps, r.LLMCalls, r.ToolCalls,
 			r.PromptTokens, r.ContextTokens, r.ContextOriginalTokens,
 			r.SummarizedMessages, r.TruncatedTools, r.Duration.Round(time.Millisecond))
 	}
-	tw.Flush()
+	_ = tw.Flush()
 
 	sums := Summarize(results)
 	if len(sums) == 0 {
 		return
 	}
-	fmt.Fprintln(w)
+	_, _ = fmt.Fprintln(w)
 	for _, s := range sums {
-		fmt.Fprintf(w, "[%s] passed %d/%d, prompt tokens=%d, context=%d, original=%d\n",
+		_, _ = fmt.Fprintf(w, "[%s] passed %d/%d, prompt tokens=%d, context=%d, original=%d\n",
 			s.Mode, s.Passed, s.Total, s.PromptTokens, s.ContextTokens, s.OriginalTokens)
 	}
 	if len(sums) == 2 {
@@ -591,7 +593,7 @@ func PrintTable(w io.Writer, results []Result) {
 		}
 		if full.PromptTokens > 0 {
 			saved := 100 * (1 - float64(asm.PromptTokens)/float64(full.PromptTokens))
-			fmt.Fprintf(w, "assembled vs full: prompt token saved %.1f%% (%d -> %d)\n",
+			_, _ = fmt.Fprintf(w, "assembled vs full: prompt token saved %.1f%% (%d -> %d)\n",
 				saved, full.PromptTokens, asm.PromptTokens)
 		}
 	}

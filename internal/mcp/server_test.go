@@ -97,7 +97,7 @@ func TestMCPInitialize(t *testing.T) {
 	if !ok {
 		t.Fatal("expected serverInfo in result")
 	}
-	if serverInfo["name"] != "ai-cli-agent" {
+	if serverInfo["name"] != "agent-rig" {
 		t.Fatalf("unexpected server name: %v", serverInfo["name"])
 	}
 }

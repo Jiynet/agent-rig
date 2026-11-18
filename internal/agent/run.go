@@ -250,8 +250,7 @@ func (a *Agent) executeBatch(ctx context.Context, actions []*types.Action) ([]*t
 
 	// 构造工具调用列表（跳过被拒绝的）
 	calls := make([]*types.ToolCall, 0, len(confirmed))
-	callIndex := make([]int, 0, len(confirmed)) // 记录在 confirmed 中的位置
-	for i, action := range confirmed {
+	for _, action := range confirmed {
 		if action == nil {
 			continue // 被拒绝
 		}
@@ -260,7 +259,6 @@ func (a *Agent) executeBatch(ctx context.Context, actions []*types.Action) ([]*t
 			Name:  action.ToolName,
 			Input: action.ToolInput,
 		})
-		callIndex = append(callIndex, i)
 	}
 
 	// 使用 ConcurrentExecutor 并发执行

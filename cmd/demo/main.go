@@ -1,4 +1,4 @@
-// demo 演示 ai-cli-agent 的端到端能力：
+// demo 演示 AgentRig 的端到端能力：
 // 用户提问 → LLM 推理 → 调用工具（读取文件）→ 综合回答。
 //
 // 使用 scripted LLM 模拟多轮 ReAct 循环，无需真实 API Key。
@@ -44,7 +44,7 @@ func (s *scriptedLLM) GenerateStream(_ context.Context, _ *types.GenerateRequest
 
 func main() {
 	fmt.Println("╔══════════════════════════════════════════════════════════╗")
-	fmt.Println("║          ai-cli-agent 端到端演示                         ║")
+	fmt.Println("║          AgentRig 端到端演示                            ║")
 	fmt.Println("║  场景：Agent 读取项目文件并生成结构分析                     ║")
 	fmt.Println("╚══════════════════════════════════════════════════════════╝")
 	fmt.Println()
@@ -75,7 +75,7 @@ func main() {
 			{
 				Content: `## 项目结构分析
 
-**项目名称**: ai-cli-agent
+**项目名称**: AgentRig
 **语言**: Go (1.26)
 **架构**: 四层分离（感知 → 规划 → 执行 → 工具）
 

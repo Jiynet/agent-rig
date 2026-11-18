@@ -18,7 +18,7 @@ func TestFileWriteAndRead(t *testing.T) {
 
 	tmpDir := t.TempDir()
 	testFile := filepath.Join(tmpDir, "test.txt")
-	content := "hello from ai-cli-agent"
+	content := "hello from AgentRig"
 
 	// 写入
 	res, err := reg.Execute(context.Background(), &types.ToolCall{
